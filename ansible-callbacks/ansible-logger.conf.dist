@@ -1,0 +1,6 @@
+[database]
+host = localhost
+user = someuser
+password = somepassword
+db = somedatabase
+

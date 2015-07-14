@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% block content%}
+	<h1 class="page-header">Playbook Details</h1>
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+{% for key,item in playbookDetails.tasks %}
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading{{ key }}">
+		<h3 class="panel-title">
+	        	<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ key }}" aria-expanded="true" aria-controls="collapse{{ key }}">
+			{{ item.name }} (Module: {{ item.module }})
+	        	</a>
+		</h3>
+	    </div>
+	    <div id="collapse{{ key }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ key }}">
+	      <div class="panel-body">
+		{% for runKey,runItem in item.runs %}
+		{% if runItem.changed %}
+		<p class="changed">
+			Host: <b>{{ runItem.hostName }}</b>{% if runItem.delegated %} <b>(delegated to: {{ runItem.delegatedHost }})</b>{% endif %}
+			{% if runItem.extraInfo %}
+	       		<a role="button" data-toggle="collapse" data-parent="#collapse{{ key }}" href="#extraInfo{{ runItem.runId }}" aria-expanded="true" aria-controls="extraInfo{{ runItem.runId }}">View Module output</a>
+			{% endif %}
+		</p>
+		{% if runItem.extraInfo %}
+	   	<div id="extraInfo{{ runItem.runId }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="extraHeading{{ runItem.runId }}">
+		<pre>{{ runItem.extraInfo }}</pre>
+		</div>
+		{% endif %}
+		{% elseif runItem.failed %}
+		<p class="failed">Host: <b>{{ runItem.hostName }}</b><br />{{ runItem.failMsg }}</p>
+		{% elseif runItem.unreachable %}
+		<p class="unreachable">Host: <b>{{ runItem.hostName }}</b><br />{{ runItem.failMsg }}</p>
+		{% elseif runItem.skipped %}
+		<p class="skipped">Host: <b>{{ runItem.hostName}}</b></p>
+		{% else %}
+		<p class="ok">
+			Host: <b>{{ runItem.hostName }}</b>{% if runItem.delegated %} <b>(delegated to: {{ runItem.delegatedHost }})</b>{% endif %}
+			{% if runItem.extraInfo %}
+	       		<a role="button" data-toggle="collapse" data-parent="#collapse{{ key }}" href="#extraInfo{{ runItem.runId }}" aria-expanded="true" aria-controls="extraInfo{{ runItem.runId }}">View Module output</a>
+			{% endif %}
+		</p>
+		{% if runItem.extraInfo %}
+	   	<div id="extraInfo{{ runItem.runId }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="extraHeading{{ runItem.runId }}">
+		<pre>{{ runItem.extraInfo }}</pre>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endfor %}
+	      </div>
+	    </div>
+	  </div>
+{% endfor %}
+	</div>
+{% endblock %}

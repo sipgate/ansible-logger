@@ -1,0 +1,13 @@
+<?php
+
+# mysql specific configuration
+$config["db"]["server"] = "localhost";
+$config["db"]["user"] = "someuser";
+$config["db"]["password"] = "secret";
+$config["db"]["db"] = "ansible";
+
+# graphs to show in the interface
+$config["graphs"][] = "ansible_lsb.codename";
+$config["graphs"][] = "ansible_userspace_architecture";
+
+?>

@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+{% block content%}
+          <h1 class="page-header">Fact Browser</h1>
+	 <!--
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+	  -->
+	  <div class="input-group">
+		<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+		<input type="text" class="form-control" placeholder="Fact Name" aria-describedby="basic-addon1" id="fact_search">
+	  </div> 
+{% if factData %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>FQDN</th>
+		  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody>
+{% for item in factData %}
+                <tr>
+                  <td>{{ item.hostName }}</td>
+                  <td>{{ item.factData }}</td>
+                </tr>
+{% endfor %}
+              </tbody>
+            </table>
+          </div>
+{% endif %}
+<script>
+$( document ).ready(function() {
+	var $input = $('#fact_search');
+	$input.typeahead( {
+		source: [
+{% for item in factNames %}
+			{ id: "{{ item.fId }}", name: "{{ item.factName }} ({{ item.useCount }})"  },
+{% endfor %}
+],
+			autoSelect: true, items: 15});
+
+	$input.change(function() {
+		var current = $input.typeahead("getActive");
+		if (current) {
+		// Some item from your model is active!
+			if (current.name == $input.val()) {
+				window.location.href = "/factbrowser/" + current.id;
+			// This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+			} else {
+			// This means it is only a partial match, you can either add a new item 
+			// or take the active if you don't want new items
+			}
+		} else {
+		// Nothing is active so it is a new value (or maybe empty value)
+		}
+		});
+});
+</script>
+{% endblock %}

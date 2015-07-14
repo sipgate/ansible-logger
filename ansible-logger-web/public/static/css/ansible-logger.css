@@ -1,0 +1,19 @@
+.failed {
+	color: red;
+}
+
+.unreachable {
+	color: red;
+}
+
+.skipped {
+	color: blue;
+}
+
+.changed {
+	color: orange;
+}
+
+.ok {
+	color: green;
+}

@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% block content%}
+          <h1 class="page-header">Hosts</h1>
+	 <!--
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+	  -->
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>FQDN</th>
+		  <th>Last Seen</th>
+		  <th>Recent Playbooks</th>
+		  <th>Facts</th>
+                </tr>
+              </thead>
+              <tbody>
+{% for item in hosts %}
+                <tr>
+                  <td>{{ item.hostName }}</td>
+                  <td>{{ item.lastSeen }}</td>
+		  <td><a href="/hostplayhistory/{{ item.hId }}">View</a></td>
+		  <td><a href="/hostfactview/{{ item.hId }}">View</a></td>
+                </tr>
+{% endfor %}
+              </tbody>
+            </table>
+          </div>
+{% endblock %}
