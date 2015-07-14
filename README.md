@@ -9,7 +9,7 @@ ansible-logger archives the results and gathered facts of your ansible runs in a
 * MySQL DB (tested with 5.6, but 5.5 and 5.1 should also work)
 
 # Setup
-To use the logger, add the following to your /etc/ansible.cfg or ~/.ansible.cfg:
+To use the logger, add the following to your /etc/ansible/ansible.cfg or ~/.ansible.cfg:
 ```
 [defaults]
 callback_plugins  = /path/to/repo/ansible-logger/ansible-callbacks 
