@@ -288,6 +288,9 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
 	# remove possible useless information before mis-interpreting them as facts
 	try:
 		del details["changed"]
+	except:
+		pass
+	try:
 		del details["module_setup"]
 	except:
 		pass
