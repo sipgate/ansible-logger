@@ -156,7 +156,6 @@ def insertOrUpdateHostName(hostName):
 					logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
 					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
-
 		else:
 			# add a new host to the table
 			try:
@@ -213,33 +212,32 @@ def storeFactData(hostId, factId, factData):
 	cur = con.cursor()
 	# get ID of given fact
 	try:
+		# add new fact data to the table
 		try:
-			cur.execute("SELECT fact_id FROM fact_data WHERE fact_id=%s AND host_id=%s",(factId, hostId))
-			rows = cur.rowcount
+			cur.execute("INSERT INTO fact_data (fact_id, host_id, value) VALUES (%s,%s,%s)", (factId, hostId, factData))
 		except mdb.Error as e:
 			if logEnabled:
-				logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
+				logging.critical("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
 				logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 			pass
+	finally:
+		cur.close()
+		con.commit()
+		con.close()
 
-		# check number of results - it might be a new fact
-		if rows > 0:
-			try:
-				cur.execute("UPDATE fact_data SET value=%s WHERE fact_id=%s AND host_id=%s",(factData, factId, hostId))
-			except mdb.Error as e:
-				if logEnabled:
-					logging.critical("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
-					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
-				pass
-		else:
-			# add new fact data to the table
-			try:
-				cur.execute("INSERT INTO fact_data (fact_id, host_id, value) VALUES (%s,%s,%s)", (factId, hostId, factData))
-			except mdb.Error as e:
-				if logEnabled:
-					logging.critical("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
-					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
-				pass
+def clearFacts(hostId):
+	con = mdb.connect(mysqlHost,mysqlUser,mysqlPassword,mysqlDb)
+	cur = con.cursor()
+
+	if logEnabled:
+		logging.debug("clearFacts(): Removing old facts for host_id=%s" % (hostId))
+	try:
+		cur.execute("DELETE FROM fact_data WHERE host_id=%s", (hostId))
+	except mdb.Error as e:
+		if logEnabled:
+			logging.critical("clearFacts() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		pass
 	finally:
 		cur.close()
 		con.commit()
@@ -376,6 +374,7 @@ def runnerLog(hostName, data, ok = True, unreachable = False, skipped = False):
 		module = invocation.get('module_name', None)
 		if module == 'setup':
 			facts = workData.get('ansible_facts', None)
+			clearFacts(hostId)
 			storeFacts(hostId,facts)
 		else:
 			storeRunnerLog(hostId, delegateHost, module ,workData, ok)
