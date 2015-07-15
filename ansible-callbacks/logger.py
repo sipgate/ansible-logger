@@ -364,15 +364,18 @@ def runnerLog(hostName, data, ok = True, unreachable = False, skipped = False):
 		delegateHost = None
 
 	if type(data) == dict:
+		# we might be removing some things from the dict before storing parts of it in
+		# the database (see storeRunnerLog()). therefore we want a 'working copy' here 
+		workData = data.copy()
 
 		hostId = insertOrUpdateHostName(hostName)
-		invocation = data.pop('invocation', None)
+		invocation = workData.pop('invocation', None)
 		module = invocation.get('module_name', None)
 		if module == 'setup':
-			facts = data.get('ansible_facts', None)
+			facts = workData.get('ansible_facts', None)
 			storeFacts(hostId,facts)
 		else:
-			storeRunnerLog(hostId, delegateHost, module ,data, ok)
+			storeRunnerLog(hostId, delegateHost, module ,workData, ok)
 	else:
 		if unreachable:
 			hostId = insertOrUpdateHostName(hostName)
