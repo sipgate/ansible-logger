@@ -490,5 +490,3 @@ class CallbackModule(object):
 		playbookFinished()
 		pass
 
-# vim: ai ts=4 sts=4 et sw=4 ft=python
-# vim: autoindent tabstop=4 shiftwidth=4 expandtab softtabstop=4 filetype=python
