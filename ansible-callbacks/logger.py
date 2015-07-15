@@ -76,7 +76,7 @@ def playbookLog(hostPattern):
 	cur = con.cursor()
 	id = -1
 	try:
-		cur.execute("INSERT INTO playbook_log (host_pattern, running) VALUES (%s,'1')", (hostPattern))
+		cur.execute("INSERT INTO playbook_log (host_pattern, running, start) VALUES (%s,'1',NOW())", (hostPattern))
 		id = cur.lastrowid
 	except mdb.Error as e:
 		if logEnabled:
@@ -110,7 +110,7 @@ def taskLog(name):
 	cur = con.cursor()
 	id = -1
 	try:
-		cur.execute("INSERT INTO task_log (playbook_id, name) VALUES (%s,%s)", (playbookId, name))
+		cur.execute("INSERT INTO task_log (playbook_id, name, start) VALUES (%s,%s,NOW())", (playbookId, name))
 		id = cur.lastrowid
 	except mdb.Error as e:
 		if logEnabled:
@@ -301,7 +301,7 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
 	con = mdb.connect(mysqlHost,mysqlUser,mysqlPassword,mysqlDb)
 	cur = con.cursor()
 	try:
-		cur.execute("INSERT INTO runner_log (`host_id`, `task_id`, `module`, `changed`, `extra_info`, `ok`, `delegate_host`) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+		cur.execute("INSERT INTO runner_log (`host_id`, `task_id`, `module`, `changed`, `extra_info`, `ok`, `delegate_host`,`start`) VALUES (%s,%s,%s,%s,%s,%s,%s,NOW())",
 			(hostId,
 			taskId,
 			module,
@@ -337,7 +337,7 @@ def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
 	con = mdb.connect(mysqlHost,mysqlUser,mysqlPassword,mysqlDb) 
 	cur = con.cursor()
 	try:
-		cur.execute("INSERT INTO runner_log (`host_id`, `task_id`, `module`, `changed`, `extra_info`, `ok`, `delegate_host`, `unreachable`, `skipped`, `fail_msg`) VALUES (%s,%s,NULL,'0',NULL,'1',%s,%s,%s,%s)",
+		cur.execute("INSERT INTO runner_log (`host_id`, `task_id`, `module`, `changed`, `extra_info`, `ok`, `delegate_host`, `unreachable`, `skipped`, `fail_msg`, `start`) VALUES (%s,%s,NULL,'0',NULL,'1',%s,%s,%s,%s,NOW())",
 			(hostId,
 			taskId,
 			delegateHost,

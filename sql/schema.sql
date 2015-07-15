@@ -66,7 +66,7 @@ DROP TABLE IF EXISTS `playbook_log`;
 CREATE TABLE `playbook_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `host_pattern` varchar(255) DEFAULT NULL,
-  `start` datetime DEFAULT CURRENT_TIMESTAMP,
+  `start` datetime DEFAULT NULL,
   `end` datetime DEFAULT NULL,
   `running` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
@@ -87,7 +87,7 @@ CREATE TABLE `runner_log` (
   `delegate_host` varchar(255) DEFAULT NULL,
   `module` text,
   `changed` tinyint(1) DEFAULT NULL,
-  `start` datetime DEFAULT CURRENT_TIMESTAMP,
+  `start` datetime DEFAULT NULL,
   `extra_info` text,
   `ok` tinyint(1) NOT NULL DEFAULT '1',
   `unreachable` tinyint(1) DEFAULT '0',
@@ -111,7 +111,7 @@ CREATE TABLE `task_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playbook_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `start` datetime DEFAULT CURRENT_TIMESTAMP,
+  `start` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_playbook` (`playbook_id`),
   CONSTRAINT `fk_playbook` FOREIGN KEY (`playbook_id`) REFERENCES `playbook_log` (`id`) ON DELETE CASCADE
