@@ -23,7 +23,12 @@ import json
 import re
 import ConfigParser
 
-Config = ConfigParser.ConfigParser()
+configDefaults = {
+	'host': 'localhost',
+	'user': 'root',
+	'password': '',
+	'db': 'ansible'}
+Config = ConfigParser.ConfigParser(configDefaults)
 basePath = os.path.dirname(os.path.realpath(__file__))
 configFile = basePath + "/ansible-logger.conf"
 Config.read(configFile)
@@ -34,7 +39,9 @@ try:
 	mysqlPassword = Config.get("database","password")
 	mysqlDb = Config.get("database","db")
 except:
-	print("Could not read database config from %s" % (configFile))
+	print("Could not read config from %s" % (configFile))
+
+
 
 # initialise some variables
 playbookId = -1
