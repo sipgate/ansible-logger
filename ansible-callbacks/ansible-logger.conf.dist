@@ -4,3 +4,8 @@ user = someuser
 password = somepassword
 db = somedatabase
 
+[log-settings]
+logging = false
+loglevel = debug
+logpath = /tmp/
+

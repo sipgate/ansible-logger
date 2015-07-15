@@ -22,26 +22,49 @@ import pprint
 import json
 import re
 import ConfigParser
+import logging
+import time
 
 configDefaults = {
 	'host': 'localhost',
 	'user': 'root',
 	'password': '',
-	'db': 'ansible'}
+	'db': 'ansible',
+	'logging': False,
+	'logpath': '/tmp/',
+	'loglevel': 'warn'}
 Config = ConfigParser.ConfigParser(configDefaults)
 basePath = os.path.dirname(os.path.realpath(__file__))
 configFile = basePath + "/ansible-logger.conf"
 Config.read(configFile)
+
 # config
 try:
 	mysqlHost = Config.get("database","host")
 	mysqlUser = Config.get("database","user")
 	mysqlPassword = Config.get("database","password")
 	mysqlDb = Config.get("database","db")
+	logEnabled = Config.getboolean("log-settings","logging")
+	logPath = Config.get("log-settings","logpath")
+	logLevel = Config.get("log-settings","loglevel")
 except:
 	print("Could not read config from %s" % (configFile))
 
+if logEnabled:
+	logFile = logPath + "ansible-logger." + str(time.time()) + ".log"
+	if logLevel == "warn":
+		configuredLogLevel = logging.WARNING
+	elif logLevel == "crit":
+		configuredLogLevel = logging.CRITICAL
+	elif logLevel == "info":
+		configuredLogLevel = logging.INFO
+	elif logLevel == "debug":
+		configuredLogLevel = logging.DEBUG
+	else:
+		configuredLogLevel = logging.INFO
 
+	logging.basicConfig(filename=logFile,level = configuredLogLevel)
+	logging.info("Loglevel set to %s" % (configuredLogLevel))
 
 # initialise some variables
 playbookId = -1
@@ -56,8 +79,9 @@ def playbookLog(hostPattern):
 		cur.execute("INSERT INTO playbook_log (host_pattern, running) VALUES (%s,'1')", (hostPattern))
 		id = cur.lastrowid
 	except mdb.Error as e:
-		print("playbookLog() - This query failed to execute: %s" %(cur._last_executed))
-		print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		if logEnabled:
+			logging.critical("playbookLog() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 	finally:
 		cur.close()
 		con.commit()
@@ -71,8 +95,9 @@ def playbookFinished():
 	try:
 		cur.execute("UPDATE playbook_log SET end = NOW(), running='0' WHERE id = %s", (playbookId))
 	except mdb.Error as e:
-		print("playbookFinished() - This query failed to execute: %s" %(cur._last_executed))
-		print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		if logEnabled:
+			logging.critical("playbookFinished() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 	finally:
 		cur.close()
 		con.commit()
@@ -88,8 +113,9 @@ def taskLog(name):
 		cur.execute("INSERT INTO task_log (playbook_id, name) VALUES (%s,%s)", (playbookId, name))
 		id = cur.lastrowid
 	except mdb.Error as e:
-		print("taskLog() - This query failed to execute: %s" %(cur._last_executed))
-		print("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		if logEnabled:
+			logging.critical("taskLog() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critial("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 	finally:
 		cur.close()
 		con.commit()
@@ -115,8 +141,9 @@ def insertOrUpdateHostName(hostName):
 			cur.execute("SELECT id FROM hosts WHERE host=%s",(hostName))
 			rows = cur.rowcount
 		except mdb.Error as e:
-			print ("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
-			print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+			if logEnabled:
+				logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
+				logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 			pass
 
 		# check number of results - it might be a new host
@@ -125,8 +152,9 @@ def insertOrUpdateHostName(hostName):
 				hostId = cur.fetchone()[0]
 				cur.execute("UPDATE hosts SET last_seen = NOW() WHERE id=%s", (hostId))
 			except mdb.Error as e:
-				print ("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
-				print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+				if logEnabled:
+					logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
+					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
 
 		else:
@@ -135,8 +163,9 @@ def insertOrUpdateHostName(hostName):
 				cur.execute("INSERT INTO hosts (host, last_seen) VALUES (%s,NOW())", (hostName))
 				hostId = cur.lastrowid
 			except mdb.Error as e:
-				print ("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
-				print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+				if logEnabled:
+					logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" %(cur._last_executed))
+					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
 	finally:
 		cur.close()
@@ -155,8 +184,9 @@ def insertOrUpdateFactName(factName):
 			cur.execute("SELECT id FROM facts WHERE fact=%s",(factName))
 			rows = cur.rowcount
 		except mdb.Error as e:
-			print ("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
-			print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+			if logEnabled:
+				logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
+				logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 			pass
 
 		# check number of results - it might be a new fact
@@ -168,8 +198,9 @@ def insertOrUpdateFactName(factName):
 				cur.execute("INSERT INTO facts (fact) VALUES (%s)", (factName))
 				factId = cur.lastrowid
 			except mdb.Error as e:
-				print ("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
-				print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+				if logEnabled:
+					logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
+					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
 	finally:
 		cur.close()
@@ -186,8 +217,9 @@ def storeFactData(hostId, factId, factData):
 			cur.execute("SELECT fact_id FROM fact_data WHERE fact_id=%s AND host_id=%s",(factId, hostId))
 			rows = cur.rowcount
 		except mdb.Error as e:
-			print ("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
-			print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+			if logEnabled:
+				logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" %(cur._last_executed))
+				logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 			pass
 
 		# check number of results - it might be a new fact
@@ -195,16 +227,18 @@ def storeFactData(hostId, factId, factData):
 			try:
 				cur.execute("UPDATE fact_data SET value=%s WHERE fact_id=%s AND host_id=%s",(factData, factId, hostId))
 			except mdb.Error as e:
-				print ("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
-				print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+				if logEnabled:
+					logging.critical("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
+					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
 		else:
 			# add new fact data to the table
 			try:
 				cur.execute("INSERT INTO fact_data (fact_id, host_id, value) VALUES (%s,%s,%s)", (factId, hostId, factData))
 			except mdb.Error as e:
-				print ("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
-				print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+				if logEnabled:
+					logging.critical("storeFactData() - This query failed to execute: %s" %(cur._last_executed))
+					logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 				pass
 	finally:
 		cur.close()
@@ -273,8 +307,9 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
 			statusInt,
 			delegateHost))
 	except mdb.Error as e:
-		print ("storeRunnerLog() - This query failed to execute: %s" %(cur._last_executed))
-		print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		if logEnabled:
+			logging.critical("storeRunnerLog() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 		pass
 	finally:
 		cur.close()
@@ -307,8 +342,9 @@ def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
 			skipInt,
 			msg))
 	except mdb.Error as e:
-		print ("storeRunnerLogMissed() - This query failed to execute: %s" %(cur._last_executed))
-		print ("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+		if logEnabled:
+			logging.critical("storeRunnerLogMissed() - This query failed to execute: %s" %(cur._last_executed))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 		pass
 	finally:
 		cur.close()
@@ -317,6 +353,8 @@ def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
 	return
 
 def runnerLog(hostName, data, ok = True, unreachable = False, skipped = False):
+	if logEnabled:
+		logging.debug("runnerLog(): Called for host=%s ok=%s unreachable=%s skipped=%s" % (hostName, ok, unreachable, skipped))
 
 	# check if this is a delegate_to: situation (hostnameA -> hostnameB) and act accordingly.
 	if isDelegatedHostname(hostName):
@@ -352,58 +390,102 @@ class CallbackModule(object):
 	def on_any(self, *args, **kwargs):
 		pass
 	def runner_on_failed(self, host, res, ignore_errors=False):
+		if logEnabled:
+			logging.debug("Callback: runner_on_failed(): host=%s, ingore_errors=%s" % (host, ignore_errors))
 		if ignore_errors:
 			okStatus = True
 		else:
 			okStatus = False
 		runnerLog(host, res, okStatus)
+		pass
 	def runner_on_ok(self, host, res):
+		if logEnabled:
+			logging.debug("Callback: runner_on_ok(): host=%s" % (host))
 		okStatus = True;
 		runnerLog(host, res,okStatus)
+		pass
 	def runner_on_skipped(self, host, item=None):
+		if logEnabled:
+			logging.debug("Callback: runner_on_skipped(): host=%s" % (host))
 		okStatus = False
 		unreachableStatus = False
 		skippedStatus = True
 		runnerLog(host, None, okStatus, unreachableStatus, skippedStatus)
 		pass
 	def runner_on_unreachable(self, host, res):
+		if logEnabled:
+			logging.debug("Callback: runner_on_unreachable(): host=%s" % (host))
 		okStatus = False
 		unreachableStatus = True
 		runnerLog(host, res, okStatus, unreachableStatus)
+		pass
 	def runner_on_no_hosts(self):
+		if logEnabled:
+			logging.debug("Callback: runner_on_no_hosts(): no-op")
 		pass
 	def runner_on_async_poll(self, host, res, jid, clock):
+		if logEnabled:
+			logging.debug("Callback: runner_on_async_poll(): host=%s" % (host))
 		runnerLog(host, res)
+		pass
 	def runner_on_async_ok(self, host, res, jid):
+		if logEnabled:
+			logging.debug("Callback: runner_on_async_ok(): host=%s" % (host))
 		okStatus = True
 		runnerLog(host, res, okStatus)
+		pass
 	def runner_on_async_failed(self, host, res, jid):
+		if logEnabled:
+			logging.debug("Callback: runner_on_async_failed(): host=%s" % (host))
 		okStatus = False
 		runnerLog(host, res, okStatus)
+		pass
 	def playbook_on_start(self):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_start(): no-op")
 		pass
 	def playbook_on_notify(self, host, handler):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_notify(): host=%s no-op" % (host))
 		pass
 	def playbook_on_no_hosts_matched(self):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_no_hosts_matched(): no-op")
 		pass
 	def playbook_on_no_hosts_remaining(self):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_no_hosts_remaining(): no-op")
 		pass
 	def playbook_on_task_start(self, name, is_conditional):
 		global taskId
+		if logEnabled:
+			logging.debug("Callback: playbook_on_task_start(): task=%s" % (name))
 		taskId = taskLog(name)
 		pass
 	def playbook_on_vars_prompt(self, varname, private=True, prompt=None, encrypt=None, confirm=False, salt_size=None, salt=None, default=None):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_vars_prompt(): varname=%s no-op" % (varname))
 		pass
 	def playbook_on_setup(self):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_setup(): no-op")
 		pass
 	def playbook_on_import_for_host(self, host, imported_file):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_import_for_host(): host=%s no-op" % (host))
 		pass
 	def playbook_on_not_import_for_host(self, host, missing_file):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_not_import_for_host(): host=%s no-op" % (host))
 		pass
 	def playbook_on_play_start(self, pattern):
 		global playbookId
+		if logEnabled:
+			logging.debug("Callback: playbook_on_play_start(): pattern=%s" % (pattern))
 		playbookId = playbookLog(pattern)
 		pass
 	def playbook_on_stats(self, stats):
+		if logEnabled:
+			logging.debug("Callback: playbook_on_stats():")
 		playbookFinished()
 		pass
