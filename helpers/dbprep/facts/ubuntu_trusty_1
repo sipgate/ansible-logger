@@ -1,0 +1,173 @@
+ansible_product_serial;To Be Filled By O.E.M.
+ansible_form_factor;Desktop
+ansible_product_version;To Be Filled By O.E.M.
+ansible_user_id;root
+ansible_memtotal_mb;1761
+ansible_product_uuid;00020003-0004-0005-0006-000700080009
+ansible_distribution_version;14.04
+ansible_domain;
+ansible_processor_cores;2
+ansible_processor_vcpus;4
+ansible_bios_version;P1.20
+ansible_processor.0;Intel(R) Atom(TM) CPU  330   @ 1.60GHz
+ansible_processor.1;Intel(R) Atom(TM) CPU  330   @ 1.60GHz
+ansible_processor.2;Intel(R) Atom(TM) CPU  330   @ 1.60GHz
+ansible_processor.3;Intel(R) Atom(TM) CPU  330   @ 1.60GHz
+ansible_lo.mtu;65536
+ansible_lo.device;lo
+ansible_lo.promisc;0
+ansible_lo.ipv4.netmask;255.0.0.0
+ansible_lo.ipv4.network;127.0.0.0
+ansible_lo.ipv4.address;127.0.0.1
+ansible_lo.ipv6.0.scope;host
+ansible_lo.ipv6.0.prefix;128
+ansible_lo.ipv6.0.address;::1
+ansible_lo.active;1
+ansible_lo.type;loopback
+ansible_userspace_bits;32
+ansible_architecture;i386
+ansible_default_ipv4.macaddress;aa:00:dd:af:fe:04
+ansible_default_ipv4.network;192.168.1.0
+ansible_default_ipv4.mtu;1500
+ansible_default_ipv4.alias;eth0
+ansible_default_ipv4.netmask;255.255.255.0
+ansible_default_ipv4.address;192.168.128.2
+ansible_default_ipv4.interface;eth0
+ansible_default_ipv4.type;ether
+ansible_default_ipv4.gateway;192.168.128.1
+ansible_swapfree_mb;0
+ansible_default_ipv6.macaddress;aa:00:04:00:0a:04
+ansible_default_ipv6.mtu;1500
+ansible_default_ipv6.prefix;64
+ansible_default_ipv6.address;2003:4c:2a01:4a00:31d0:f1ae:5e7f:5dbc
+ansible_default_ipv6.interface;eth0
+ansible_default_ipv6.scope;global
+ansible_default_ipv6.type;ether
+ansible_default_ipv6.gateway;fe80::2665:11ff:feec:1a93
+ansible_distribution_release;trusty
+ansible_system_vendor;To Be Filled By O.E.M.
+ansible_os_family;Debian
+ansible_selinux;0
+ansible_userspace_architecture;i386
+ansible_swaptotal_mb;0
+ansible_product_name;To Be Filled By O.E.M.
+ansible_pkg_mgr;apt
+ansible_memfree_mb;123
+ansible_devices.sdd.scheduler_mode;deadline
+ansible_devices.sdd.rotational;1
+ansible_devices.sdd.vendor;TrekStor
+ansible_devices.sdd.sectors;5860533168
+ansible_devices.sdd.host;USB controller: Renesas Technology Corp. uPD720202 USB 3.0 Host Controller (rev 02)
+ansible_devices.sdd.sectorsize;4096
+ansible_devices.sdd.removable;0
+ansible_devices.sdd.support_discard;0
+ansible_devices.sdd.model;DS maxi light 30
+ansible_devices.sdd.partitions.sdd1.start;2048
+ansible_devices.sdd.partitions.sdd1.sectorsize;512
+ansible_devices.sdd.partitions.sdd1.sectors;5860530176
+ansible_devices.sdd.partitions.sdd1.size;2.73 TB
+ansible_devices.sdd.size;21.83 TB
+ansible_devices.sr0.scheduler_mode;deadline
+ansible_devices.sr0.rotational;1
+ansible_devices.sr0.vendor;HL-DT-ST
+ansible_devices.sr0.sectors;2097151
+ansible_devices.sr0.host;SATA controller: NVIDIA Corporation MCP79 AHCI Controller (rev b1)
+ansible_devices.sr0.sectorsize;512
+ansible_devices.sr0.removable;1
+ansible_devices.sr0.support_discard;0
+ansible_devices.sr0.model;DVD+-RW GT80N
+ansible_devices.sr0.size;1024.00 MB
+ansible_devices.sda.scheduler_mode;deadline
+ansible_devices.sda.rotational;1
+ansible_devices.sda.vendor;ATA
+ansible_devices.sda.sectors;312581808
+ansible_devices.sda.host;SATA controller: NVIDIA Corporation MCP79 AHCI Controller (rev b1)
+ansible_devices.sda.sectorsize;512
+ansible_devices.sda.removable;0
+ansible_devices.sda.support_discard;0
+ansible_devices.sda.model;ST9160821AS
+ansible_devices.sda.partitions.sda2.start;308592585
+ansible_devices.sda.partitions.sda2.sectorsize;512
+ansible_devices.sda.partitions.sda2.sectors;3984120
+ansible_devices.sda.partitions.sda2.size;1.90 GB
+ansible_devices.sda.partitions.sda1.start;63
+ansible_devices.sda.partitions.sda1.sectorsize;512
+ansible_devices.sda.partitions.sda1.sectors;308592522
+ansible_devices.sda.partitions.sda1.size;147.15 GB
+ansible_devices.sda.size;149.05 GB
+ansible_devices.sdb.scheduler_mode;deadline
+ansible_devices.sdb.rotational;1
+ansible_devices.sdb.vendor;ATA
+ansible_devices.sdb.sectors;5860533168
+ansible_devices.sdb.host;SATA controller: NVIDIA Corporation MCP79 AHCI Controller (rev b1)
+ansible_devices.sdb.sectorsize;512
+ansible_devices.sdb.removable;0
+ansible_devices.sdb.support_discard;0
+ansible_devices.sdb.model;WDC WD30EFRX-68E
+ansible_devices.sdb.partitions.sdb1.start;2048
+ansible_devices.sdb.partitions.sdb1.sectorsize;512
+ansible_devices.sdb.partitions.sdb1.sectors;2930274304
+ansible_devices.sdb.partitions.sdb1.size;1.36 TB
+ansible_devices.sdb.size;2.73 TB
+ansible_devices.sdc.scheduler_mode;deadline
+ansible_devices.sdc.rotational;1
+ansible_devices.sdc.vendor;ATA
+ansible_devices.sdc.sectors;2930277168
+ansible_devices.sdc.host;SATA controller: NVIDIA Corporation MCP79 AHCI Controller (rev b1)
+ansible_devices.sdc.sectorsize;512
+ansible_devices.sdc.removable;0
+ansible_devices.sdc.support_discard;0
+ansible_devices.sdc.model;ST31500341AS
+ansible_devices.sdc.partitions.sdc1.start;63
+ansible_devices.sdc.partitions.sdc1.sectorsize;512
+ansible_devices.sdc.partitions.sdc1.sectors;2930272002
+ansible_devices.sdc.partitions.sdc1.size;1.36 TB
+ansible_devices.sdc.size;1.36 TB
+ansible_distribution;Ubuntu
+ansible_processor_count;1
+ansible_lsb.release;14.04
+ansible_lsb.major_release;14
+ansible_lsb.codename;trusty
+ansible_lsb.id;Ubuntu
+ansible_lsb.description;Ubuntu 14.04.2 LTS
+ansible_bios_date;12/30/2009
+ansible_all_ipv6_addresses.0;fe80::225:0012:babe:affe
+ansible_interfaces.0;lo
+ansible_interfaces.1;eth0
+ansible_machine;i686
+ansible_all_ipv4_addresses.0;192.168.1.2
+ansible_processor_threads_per_core;2
+ansible_mounts.0.size_total;155384381440
+ansible_mounts.0.mount;/
+ansible_mounts.0.size_available;139808706560
+ansible_mounts.0.fstype;ext4
+ansible_mounts.0.device;/dev/sda1
+ansible_mounts.0.options;rw,noatime,errors=remount-ro
+ansible_mounts.1.size_total;1476622413824
+ansible_mounts.1.mount;/data
+ansible_mounts.1.size_available;687260241920
+ansible_mounts.1.fstype;ext4
+ansible_mounts.1.device;/dev/md0
+ansible_mounts.1.options;rw,noatime,errors=remount-ro
+ansible_mounts.2.size_total;2953372196864
+ansible_mounts.2.mount;/data/movies
+ansible_mounts.2.size_available;33542791168
+ansible_mounts.2.fstype;ext4
+ansible_mounts.2.device;/dev/sdd1
+ansible_mounts.2.options;rw,noatime,errors=remount-ro
+ansible_eth0.macaddress;aa:00:04:ff:bb:aa
+ansible_eth0.module;forcedeth
+ansible_eth0.mtu;1500
+ansible_eth0.device;eth0
+ansible_eth0.promisc;0
+ansible_eth0.ipv4.netmask;255.255.255.0
+ansible_eth0.ipv4.network;192.168.1.0
+ansible_eth0.ipv4.address;192.168.1.2
+ansible_eth0.ipv6.0.scope;link
+ansible_eth0.ipv6.0.prefix;64
+ansible_eth0.ipv6.0.address;fe80::225:22ff:fe2a:b8dc
+ansible_eth0.active;1
+ansible_eth0.type;ether
+ansible_system;Linux
+ansible_kernel;3.13.0-53-generic
+ansible_python_version;2.7.6

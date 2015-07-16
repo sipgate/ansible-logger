@@ -1,0 +1,10 @@
+Edit stuff here;command
+Start Service;service
+Deploy Config;template
+Deploy Tarball;copy
+Get Config File;fetch
+Install MySQL;apt
+Update Packet Cache;apt
+Configure HaProxy;haproxy
+Notify Big Boss;mail
+Create DB User;mysql_user

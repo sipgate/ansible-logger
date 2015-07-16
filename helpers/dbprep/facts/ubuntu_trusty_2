@@ -1,0 +1,169 @@
+ansible_product_serial;NA
+ansible_form_factor;Desktop
+ansible_product_version;System Version
+ansible_memtotal_mb;7670
+ansible_product_uuid;NA
+ansible_distribution_version;14.04
+ansible_domain;
+ansible_processor_cores;4
+ansible_virtualization_role;host
+ansible_processor_vcpus;4
+ansible_bios_version;0703
+ansible_processor.0;Intel(R) Core(TM) i5-4570 CPU @ 3.20GHz
+ansible_processor.1;Intel(R) Core(TM) i5-4570 CPU @ 3.20GHz
+ansible_processor.2;Intel(R) Core(TM) i5-4570 CPU @ 3.20GHz
+ansible_processor.3;Intel(R) Core(TM) i5-4570 CPU @ 3.20GHz
+ansible_virtualization_type;kvm
+ansible_lo.mtu;65536
+ansible_lo.device;lo
+ansible_lo.promisc;0
+ansible_lo.ipv4.netmask;255.0.0.0
+ansible_lo.ipv4.network;127.0.0.0
+ansible_lo.ipv4.address;127.0.0.1
+ansible_lo.ipv6.0.scope;host
+ansible_lo.ipv6.0.prefix;128
+ansible_lo.ipv6.0.address;::1
+ansible_lo.active;1
+ansible_lo.type;loopback
+ansible_userspace_bits;64
+ansible_architecture;x86_64
+ansible_default_ipv4.macaddress;ac:22:11:43:df:e1
+ansible_default_ipv4.network;192.168.1.0
+ansible_default_ipv4.mtu;1500
+ansible_default_ipv4.alias;eth0
+ansible_default_ipv4.netmask;255.255.255.0
+ansible_default_ipv4.address;192.168.1.42
+ansible_default_ipv4.interface;eth0
+ansible_default_ipv4.type;ether
+ansible_default_ipv4.gateway;192.168.1.1
+ansible_swapfree_mb;3953
+ansible_default_ipv6.macaddress;ac:22:aa:f1:34:fe
+ansible_default_ipv6.mtu;1500
+ansible_default_ipv6.prefix;64
+ansible_default_ipv6.address;2003:a1:4356:abab:1010:01011:9023:aaaa
+ansible_default_ipv6.interface;eth0
+ansible_default_ipv6.scope;global
+ansible_default_ipv6.type;ether
+ansible_default_ipv6.gateway;fe80::8888:11ff:1020:fffe
+ansible_distribution_release;trusty
+ansible_system_vendor;ASUS
+ansible_os_family;Debian
+ansible_selinux;0
+ansible_userspace_architecture;x86_64
+ansible_swaptotal_mb;3953
+ansible_product_name;All Series
+ansible_pkg_mgr;apt
+ansible_memfree_mb;2982
+ansible_devices.sr0.scheduler_mode;deadline
+ansible_devices.sr0.rotational;1
+ansible_devices.sr0.vendor;TSSTcorp
+ansible_devices.sr0.sectors;56080
+ansible_devices.sr0.host;SATA controller: Intel Corporation 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode] (rev 05)
+ansible_devices.sr0.sectorsize;2048
+ansible_devices.sr0.removable;1
+ansible_devices.sr0.support_discard;0
+ansible_devices.sr0.model;CDDVDW SH-224DB
+ansible_devices.sr0.size;109.53 MB
+ansible_devices.sda.scheduler_mode;deadline
+ansible_devices.sda.rotational;0
+ansible_devices.sda.vendor;ATA
+ansible_devices.sda.sectors;488397168
+ansible_devices.sda.host;SATA controller: Intel Corporation 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode] (rev 05)
+ansible_devices.sda.sectorsize;512
+ansible_devices.sda.removable;0
+ansible_devices.sda.support_discard;512
+ansible_devices.sda.model;Samsung SSD 840
+ansible_devices.sda.partitions.sda4.start;484493310
+ansible_devices.sda.partitions.sda4.sectorsize;512
+ansible_devices.sda.partitions.sda4.sectors;2
+ansible_devices.sda.partitions.sda4.size;1.00 KB
+ansible_devices.sda.partitions.sda5.start;484493312
+ansible_devices.sda.partitions.sda5.sectorsize;512
+ansible_devices.sda.partitions.sda5.sectors;3903488
+ansible_devices.sda.partitions.sda5.size;1.86 GB
+ansible_devices.sda.partitions.sda2.start;146485248
+ansible_devices.sda.partitions.sda2.sectorsize;512
+ansible_devices.sda.partitions.sda2.sectors;204800
+ansible_devices.sda.partitions.sda2.size;100.00 MB
+ansible_devices.sda.partitions.sda3.start;146690048
+ansible_devices.sda.partitions.sda3.sectorsize;512
+ansible_devices.sda.partitions.sda3.sectors;337801216
+ansible_devices.sda.partitions.sda3.size;161.08 GB
+ansible_devices.sda.partitions.sda1.start;2048
+ansible_devices.sda.partitions.sda1.sectorsize;512
+ansible_devices.sda.partitions.sda1.sectors;146483200
+ansible_devices.sda.partitions.sda1.size;69.85 GB
+ansible_devices.sda.size;232.89 GB
+ansible_devices.sdb.scheduler_mode;deadline
+ansible_devices.sdb.rotational;1
+ansible_devices.sdb.vendor;ATA
+ansible_devices.sdb.sectors;586072368
+ansible_devices.sdb.host;SATA controller: Intel Corporation 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode] (rev 05)
+ansible_devices.sdb.sectorsize;512
+ansible_devices.sdb.removable;0
+ansible_devices.sdb.support_discard;0
+ansible_devices.sdb.model;WDC WD3000GLFS-0
+ansible_devices.sdb.partitions.sdb3.start;209712510
+ansible_devices.sdb.partitions.sdb3.sectorsize;512
+ansible_devices.sdb.partitions.sdb3.sectors;4192965
+ansible_devices.sdb.partitions.sdb3.size;2.00 GB
+ansible_devices.sdb.partitions.sdb2.start;104856255
+ansible_devices.sdb.partitions.sdb2.sectorsize;512
+ansible_devices.sdb.partitions.sdb2.sectors;104856255
+ansible_devices.sdb.partitions.sdb2.size;50.00 GB
+ansible_devices.sdb.partitions.sdb1.start;63
+ansible_devices.sdb.partitions.sdb1.sectorsize;512
+ansible_devices.sdb.partitions.sdb1.sectors;58593750
+ansible_devices.sdb.partitions.sdb1.size;27.94 GB
+ansible_devices.sdb.partitions.sdb5.start;213905538
+ansible_devices.sdb.partitions.sdb5.sectorsize;512
+ansible_devices.sdb.partitions.sdb5.sectors;372161727
+ansible_devices.sdb.partitions.sdb5.size;177.46 GB
+ansible_devices.sdb.partitions.sdb4.start;213905536
+ansible_devices.sdb.partitions.sdb4.sectorsize;512
+ansible_devices.sdb.partitions.sdb4.sectors;2
+ansible_devices.sdb.partitions.sdb4.size;1.00 KB
+ansible_devices.sdb.size;279.46 GB
+ansible_distribution;Ubuntu
+ansible_processor_count;1
+ansible_lsb.release;14.04
+ansible_lsb.major_release;14
+ansible_lsb.codename;trusty
+ansible_lsb.id;Ubuntu
+ansible_lsb.description;Ubuntu 14.04.2 LTS
+ansible_bios_date;07/17/2013
+ansible_all_ipv6_addresses.0;fe80::ae01:bff:babe:dead
+ansible_interfaces.0;lo
+ansible_interfaces.1;virbr0
+ansible_interfaces.2;eth0
+ansible_machine;x86_64
+ansible_kernel;3.13.0-57-generic
+ansible_processor_threads_per_core;1
+ansible_mounts.0.size_total;73687973888
+ansible_mounts.0.mount;/
+ansible_mounts.0.size_available;27297255424
+ansible_mounts.0.fstype;ext4
+ansible_mounts.0.device;/dev/sda1
+ansible_mounts.0.options;rw,errors=remount-ro
+ansible_mounts.1.size_total;28712960
+ansible_mounts.1.mount;/media/rudi/HM-CFG-LAN
+ansible_mounts.1.size_available;0
+ansible_mounts.1.fstype;iso9660
+ansible_mounts.1.device;/dev/sr0
+ansible_mounts.1.options;ro,nosuid,nodev,uid=1000,gid=1000,iocharset=utf8,mode=0400,dmode=0500,uhelper=udisks2
+ansible_eth0.macaddress;ac:22:ae:65:34:dd
+ansible_eth0.module;r8169
+ansible_eth0.mtu;1500
+ansible_eth0.device;eth0
+ansible_eth0.promisc;0
+ansible_eth0.ipv4.netmask;255.255.255.0
+ansible_eth0.ipv4.network;192.168.1.0
+ansible_eth0.ipv4.address;192.168.1.42
+ansible_eth0.ipv6.0.scope;link
+ansible_eth0.ipv6.0.prefix;64
+ansible_eth0.ipv6.0.address;fe80::ae22:bff:fec5:59ee
+ansible_eth0.active;1
+ansible_eth0.type;ether
+ansible_system;Linux
+ansible_all_ipv4_addresses.0;192.168.1.42
+ansible_python_version;2.7.6
