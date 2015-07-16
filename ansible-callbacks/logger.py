@@ -1,4 +1,3 @@
-
 # ansible-logger
 # Copyright (C) 2015  sipgate GmbH
 # 
@@ -18,7 +17,6 @@
 
 import os
 import MySQLdb as mdb
-import pprint
 import json
 import re
 import ConfigParser
@@ -115,7 +113,7 @@ def taskLog(name):
 	except mdb.Error as e:
 		if logEnabled:
 			logging.critical("taskLog() - This query failed to execute: %s" %(cur._last_executed))
-			logging.critial("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
+			logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
 	finally:
 		cur.close()
 		con.commit()
@@ -127,9 +125,9 @@ def taskLog(name):
 def isDelegatedHostname(hostName):
 	pattern = re.compile("^[a-zA-Z0-9\.-]+ -> [a-zA-Z0-9\.-]+$")
 	if pattern.match(hostName):
-		return True;
+		return True
 	else:
-		return False;
+		return False
 
 def insertOrUpdateHostName(hostName):
 
@@ -406,7 +404,7 @@ class CallbackModule(object):
 	def runner_on_ok(self, host, res):
 		if logEnabled:
 			logging.debug("Callback: runner_on_ok(): host=%s" % (host))
-		okStatus = True;
+		okStatus = True
 		runnerLog(host, res,okStatus)
 		pass
 	def runner_on_skipped(self, host, item=None):
