@@ -30,8 +30,7 @@
 		<input type="text" class="form-control" placeholder="Fact Name" aria-describedby="basic-addon1" id="fact_search">
 	  </div> 
 {% if factData %}
-          <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="factTable">
               <thead>
                 <tr>
                   <th>FQDN</th>
@@ -47,7 +46,11 @@
 {% endfor %}
               </tbody>
             </table>
-          </div>
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#factTable').dataTable({ "pageLength": 50 });
+	} );
+	</script>
 {% endif %}
 <script>
 $( document ).ready(function() {

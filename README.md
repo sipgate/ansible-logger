@@ -2,7 +2,7 @@
 ansible-logger archives the results and gathered facts of your ansible runs in a MySQL database (using ansible callbacks). It comes with an easy to use and responsive web interface. It works as a 'drop-in' logging solution - you do not have to modify your existing playbooks in any way to make use of it!
 
 # Requirements
-* Ansbile 1.8
+* Ansbile (tested with 1.5.4 and 1.8)
 * Python 2.7
 * Python MySQLdb
 * Webserver (tested with apache) + PHP5 (tested with 5.4)
