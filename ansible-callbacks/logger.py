@@ -22,6 +22,7 @@ import re
 import ConfigParser
 import logging
 import time
+from thread import allocate_lock
 
 configDefaults = {
     'host': 'localhost',
@@ -70,31 +71,40 @@ taskId = -1
 
 dbCons = []
 dbConInUse = []
+dbLock = allocate_lock()
 
 # initialise db connection pool
 for db in range(0,4):
     dbCons.append(mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb))
-    dbConInUse(False)
+    dbCons[db].autocommit(True)
+    dbConInUse.append(False)
 
 def getDbCon():
-    for k,v in enumerate(dbCons)
-        if ! dbConInUse[k]
-            logging.debug("getDbCon(): Provided DB connection %s" % (k))
+    dbLock.acquire()
+    for k,v in enumerate(dbCons):
+        logging.debug("getDbCon(): Checking DB connection %s" % (k))
+        if dbConInUse[k] == False:
             dbConInUse[k] = True
+            dbLock.release()
+            logging.debug("getDbCon(): Provided DB connection %s" % (k))
             return dbCons[k]
+    dbLock.release()
     return None
 
 def releaseDbCon(usedCon):
-    for k,v in enumerate(dbCons)
-        if dbCons[k] == usedCon
-            logging.debug("releaseDbCon(): Released DB connection %s" % (k))
+    dbLock.acquire()
+    for k,v in enumerate(dbCons):
+        if dbCons[k] == usedCon:
             dbConInUse[k] = False
+            dbLock.release()
+            logging.debug("releaseDbCon(): Released DB connection %s" % (k))
             return True
+    dbLock.release()
     return False
 
 
 def playbookLog(hostPattern):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
     id = -1
     try:
@@ -106,13 +116,12 @@ def playbookLog(hostPattern):
             logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
     return id
 
 
 def playbookFinished():
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon() 
     cur = con.cursor()
     try:
         cur.execute("UPDATE playbook_log SET end = NOW(), running='0' WHERE id = %s", (playbookId))
@@ -122,12 +131,11 @@ def playbookFinished():
             logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
 
 
 def taskLog(name):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon() 
     cur = con.cursor()
     id = -1
     try:
@@ -139,8 +147,7 @@ def taskLog(name):
             logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
 
     return id
 
@@ -154,13 +161,15 @@ def isDelegatedHostname(hostName):
 
 
 def insertOrUpdateHostName(hostName):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon() 
     cur = con.cursor()
+    rows = 0
     # get ID of given host
     try:
         try:
             cur.execute("SELECT id FROM hosts WHERE host=%s", (hostName))
             rows = cur.rowcount
+            logging.debug("insertOrUpdateHostName(): Looking up host '%s', %s rows returned" % (hostName, rows))
         except mdb.Error as e:
             if logEnabled:
                 logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" % (cur._last_executed))
@@ -174,8 +183,7 @@ def insertOrUpdateHostName(hostName):
                 cur.execute("UPDATE hosts SET last_seen = NOW() WHERE id=%s", (hostId))
             except mdb.Error as e:
                 if logEnabled:
-                    logging.critical(
-                        "insertOrUpdateHostName() - This query failed to execute: %s" % (cur._last_executed))
+                    logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" % (cur._last_executed))
                     logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
                 pass
         else:
@@ -185,26 +193,26 @@ def insertOrUpdateHostName(hostName):
                 hostId = cur.lastrowid
             except mdb.Error as e:
                 if logEnabled:
-                    logging.critical(
-                        "insertOrUpdateHostName() - This query failed to execute: %s" % (cur._last_executed))
+                    logging.critical("insertOrUpdateHostName() - This query failed to execute: %s" % (cur._last_executed))
                     logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
                 pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
     return hostId
 
 
 def insertOrUpdateFactName(factName):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
     factId = -1
+    rows = 0
     # get ID of given fact
     try:
         try:
             cur.execute("SELECT id FROM facts WHERE fact=%s", (factName))
             rows = cur.rowcount
+            logging.debug("insertOrUpdateFactName(): Looking up fact '%s', %s rows returned" % (factName, rows))
         except mdb.Error as e:
             if logEnabled:
                 logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" % (cur._last_executed))
@@ -221,19 +229,17 @@ def insertOrUpdateFactName(factName):
                 factId = cur.lastrowid
             except mdb.Error as e:
                 if logEnabled:
-                    logging.critical(
-                        "insertOrUpdateFactName() - This query failed to execute: %s" % (cur._last_executed))
+                    logging.critical("insertOrUpdateFactName() - This query failed to execute: %s" % (cur._last_executed))
                     logging.critical("MySQL Error [%d]: %s" % (e.args[0], e.args[1]))
                 pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
     return factId
 
 
 def storeFactData(hostId, factId, factData):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
     # get ID of given fact
     try:
@@ -247,12 +253,11 @@ def storeFactData(hostId, factId, factData):
             pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
 
 
 def clearFacts(hostId):
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
 
     if logEnabled:
@@ -266,8 +271,7 @@ def clearFacts(hostId):
         pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
 
 
 def storeFacts(hostId, facts, parentString=None):
@@ -328,7 +332,7 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
     # convert whatever remains to JSON (depending on the ansible module, there might be more or less extra information)
     extraInfo = json.dumps(details)
 
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
     try:
         cur.execute(
@@ -347,8 +351,7 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
         pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
 
 
 def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
@@ -370,7 +373,7 @@ def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
         # there is no notification about the "setup"/"gather_facts" tasks - so if the setup task fails, the following query would fail es well since the taskId is still at default (-1)
         return
 
-    con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
+    con = getDbCon()
     cur = con.cursor()
     try:
         cur.execute(
@@ -388,8 +391,7 @@ def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
         pass
     finally:
         cur.close()
-        con.commit()
-        con.close()
+        releaseDbCon(con)
     return
 
 
