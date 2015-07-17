@@ -276,6 +276,10 @@ def storeFacts(hostId, facts, parentString=None):
 
 
 def storeRunnerLog(hostId, delegateHost, module, details, ok):
+    if taskId < 0:
+            logger.critical("storeRunnerLog(): trying to store a runner event but I have not been notitified of a task yet. hostId=%s delegateHost=%s module=%s" % (hostId, delegateHost, module))
+            return
+
     # evaluate changed flag (MySQL uses TINYINT(1) for bool values)
     if details.get("changed", False):
         changed = 1
@@ -324,6 +328,10 @@ def storeRunnerLog(hostId, delegateHost, module, details, ok):
 
 
 def storeRunnerLogMissed(hostId, delegateHost, reason, msg):
+    if taskId < 0:
+            logger.critical("storeRunnerLogMissed(): trying to store a runner event but I have not been notitified of a task yet. hostId=%s delegateHost=%s" % (hostId, delegateHost))
+            return
+
     # host was unreachable or skipped - not much to do here
     if reason == "unreachable":
         unreachInt = 1
