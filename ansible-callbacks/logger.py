@@ -68,6 +68,30 @@ if logEnabled:
 playbookId = -1
 taskId = -1
 
+dbCons = []
+dbConInUse = []
+
+# initialise db connection pool
+for db in range(0,4):
+    dbCons.append(mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb))
+    dbConInUse(False)
+
+def getDbCon():
+    for k,v in enumerate(dbCons)
+        if ! dbConInUse[k]
+            logging.debug("getDbCon(): Provided DB connection %s" % (k))
+            dbConInUse[k] = True
+            return dbCons[k]
+    return None
+
+def releaseDbCon(usedCon):
+    for k,v in enumerate(dbCons)
+        if dbCons[k] == usedCon
+            logging.debug("releaseDbCon(): Released DB connection %s" % (k))
+            dbConInUse[k] = False
+            return True
+    return False
+
 
 def playbookLog(hostPattern):
     con = mdb.connect(mysqlHost, mysqlUser, mysqlPassword, mysqlDb)
