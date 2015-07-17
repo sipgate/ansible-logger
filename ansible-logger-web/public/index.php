@@ -83,7 +83,7 @@ $app->get('/hostplayhistory/:hId', function($hId) use ($app) {
 	$charts = $al->getDashboardGraphs();
 	$ansiblePlays = $al->getPlaybooksForHost($hId);
 	$hostCount = $al->getHostCount();
-	$app->render('page_hostfactview.html', array(
+	$app->render('page_hostplayhistory.html', array(
 		"hostCount" => $hostCount,
 		"ansiblePlays" => $ansiblePlays,
 		"currentHost" => $currentHost,
